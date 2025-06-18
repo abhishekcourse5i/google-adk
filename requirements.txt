@@ -1,0 +1,5 @@
+python-dotenv
+psutil
+litellm
+google-generativeai
+google-adk
