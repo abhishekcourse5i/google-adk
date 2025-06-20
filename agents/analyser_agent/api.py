@@ -49,7 +49,7 @@ def create_api_router(task_manager):
         session_id: Optional[str] = Form(None),
         context: Optional[str] = Form("{}"),
         url: Optional[str] = Form(None),
-        file_type: Optional[str] = Form(None),
+        document_type: Optional[str] = Form(None),
         guidelines: Optional[str] = Form(None),
         file: Optional[UploadFile] = File(None)
     ):
@@ -66,6 +66,9 @@ def create_api_router(task_manager):
         try:
             
             context = json.loads(context or "{}")
+            
+            # Initialize file_path to None
+            file_path = None
             
             # Handle file upload if provided
             if file:
@@ -187,7 +190,7 @@ def create_api_router(task_manager):
                     document_name=document_name,
                     status=status,
                     score=score,
-                    file_type=file_type or "",
+                    document_type=document_type or "",
                     file_url=file_path or url or "",
                     suggestions=suggestions,
                     conflicts=conflicts,

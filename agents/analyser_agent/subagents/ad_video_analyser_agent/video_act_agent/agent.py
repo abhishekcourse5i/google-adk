@@ -17,11 +17,9 @@ video_act_agent = LlmAgent(
     model=GEMINI_MODEL,
     instruction=f"""You are a video analysis agent. Your job is to analyse video ads and check whether they follow the provided guidelines.
 
-    You will receive a path to the video. Based on the response by the tool, your task is to provide suggestions to improve the video ad.
-
-    Also, provide a score out of 100 based if the video follows the guidelines.
+    You will receive a path to the video. Based on the response by the tool, your task is to provide a summary of the Video Ad, identify conflicts, provide suggestions for improvement and provide a score out of 100 based on if the Video Ad follows the guidelines.
     """,
-    description="This agent analyzes video content to provide suggestions and score using Google Gemini.",
+    description="This agent analyzes video content to provide conflicts, summary, suggestions, and score using Google Gemini.",
     tools=[get_video_summary],
     output_key="agent_output",
 )

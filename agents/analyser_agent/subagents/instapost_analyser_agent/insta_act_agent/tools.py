@@ -30,7 +30,7 @@ def get_insta_summary(
     """
     logger.info(f"Getting Instagram post summary for file: {path}")
     
-    prompt += f"\n\nYou must use the following guidelines for the Instagram post: {INSTA_GUIDELINES}\n\nAlso, provide a score out of 100 based if the post follows the guidelines."
+    prompt += f"\n\nYou must also use the following guidelines for the Instagram post: {INSTA_GUIDELINES}\n\nAlso, provide a score out of 100 based if the post follows the guidelines."
     
     try:
         logger.debug(f"Uploading Instagram post file: {path}")

@@ -39,7 +39,7 @@ class AnalysisDatabase:
                 upload_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 status TEXT,
                 score REAL,
-                file_type TEXT,
+                document_type TEXT,
                 file_url TEXT,
                 suggestions TEXT,  -- JSON array as text
                 conflicts TEXT,    -- JSON array as text
@@ -61,7 +61,7 @@ class AnalysisDatabase:
                              document_name: str,
                              status: str,
                              score: float,
-                             file_type: str,
+                             document_type: str,
                              file_url: str,
                              suggestions: List[str],
                              conflicts: List[str],
@@ -75,7 +75,7 @@ class AnalysisDatabase:
             document_name: Name of the document
             status: Status of the analysis (Reject/Approved)
             score: Score of the analysis
-            file_type: Type of the file
+            document_type: Type of the document
             file_url: URL to the file
             suggestions: List of suggestions
             conflicts: List of conflicts
@@ -96,9 +96,9 @@ class AnalysisDatabase:
             
             cursor.execute('''
             INSERT OR REPLACE INTO analysis_results 
-            (document_id, document_name, upload_time, status, score, file_type, file_url, suggestions, conflicts, guidelines, summary)
+            (document_id, document_name, upload_time, status, score, document_type, file_url, suggestions, conflicts, guidelines, summary)
             VALUES (?, ?, CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?, ?)
-            ''', (document_id, document_name, status, score, file_type, file_url, suggestions_json, conflicts_json, guidelines_json, summary))
+            ''', (document_id, document_name, status, score, document_type, file_url, suggestions_json, conflicts_json, guidelines_json, summary))
             
             conn.commit()
             logger.info(f"Stored analysis result for document ID: {document_id}")
@@ -228,7 +228,7 @@ class AnalysisDatabase:
                 upload_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 status TEXT,
                 score REAL,
-                file_type TEXT,
+                document_type TEXT,
                 file_url TEXT,
                 suggestions TEXT,  -- JSON array as text
                 conflicts TEXT,    -- JSON array as text
