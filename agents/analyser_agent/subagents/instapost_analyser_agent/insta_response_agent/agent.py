@@ -4,16 +4,18 @@ Response Agent
 
 from google.adk.agents import LlmAgent
 from pydantic import BaseModel, Field
+from typing import List
 
 class AgentOutput(BaseModel):
     """
     Output model for the Insta post analyser agent.
     Contains the results from the sub-agents.
     """
-    insta_analysis: str = Field(..., description="Analysis of the Instagram post content.")
-    insta_suggestions: str = Field(..., description="Suggestions to improve the Instagram post based on the analysis.")
-    insta_summary: str = Field(..., description="Summary of the Instagram post content.")
+    conflicts: List[str] = Field(..., description="List of conflicts or issues found in the Instagram content.")
+    suggestions: List[str] = Field(..., description="List of suggestions to improve the Instagram post based on the analysis.")
+    summary: str = Field(..., description="Summary of the instagram post.")
     score: int = Field(..., description="Overall score based on the analyses (0-100).")
+    guidelines: List[str] = Field(..., description="Guidelines used for the analysis.")
 
 # --- Constants ---
 GEMINI_MODEL = "gemini-2.0-flash"

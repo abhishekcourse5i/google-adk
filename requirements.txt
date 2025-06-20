@@ -1,5 +1,7 @@
-python-dotenv
-psutil
-litellm
-google-generativeai
-google-adk
+python-dotenv==1.1.0
+psutil==7.0.0
+litellm==1.72.6
+google-generativeai==0.8.5
+google-adk==1.3.0
+beautifulsoup4==4.13.4
+requests==2.32.4

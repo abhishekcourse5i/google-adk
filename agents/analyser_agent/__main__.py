@@ -1,6 +1,6 @@
 """
-Entry point for the Speaker Agent.
-Initializes and starts the agent's server.
+Entry point for the Analyser Agent (pre MLR version).
+Initializes and starts the agent's A2A server with API endpoints.
 """
 
 import os
@@ -8,16 +8,18 @@ import sys
 import logging
 import argparse
 import uvicorn
-import asyncio # Import asyncio
-from contextlib import AsyncExitStack # For MCP exit stack
+import asyncio
+from contextlib import AsyncExitStack
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 # Use relative imports within the agent package
-from .task_manager import TaskManager # Add this import
-from .agent import root_agent # Import the coroutine
-from common.a2a_server import AgentRequest, AgentResponse, create_agent_server # Use the helper
+from .task_manager import TaskManager
+from .agent import root_agent
+from .api import create_api_router
+from common.a2a_server import AgentRequest, AgentResponse, create_agent_server
 
 # Configure logging
 logging.basicConfig(
@@ -29,12 +31,12 @@ logger = logging.getLogger(__name__)
 
 # Load environment variables
 dotenv_path = os.path.join(os.path.dirname(__file__), '..', '..', '.env')
-load_status = load_dotenv(dotenv_path=dotenv_path, override=True) # Use override just in case
+load_status = load_dotenv(dotenv_path=dotenv_path, override=True)
 
-async def main(): # Make main async
-    """Initialize and start the Speaker Agent server."""
+async def main():
+    """Initialize and start the Analyser Agent server (pre MLR implementation)."""
 
-    logger.info("Starting Speaker Agent A2A Server initialization...")
+    logger.info("Starting Analyser Agent A2A Server initialization...")
     
     # Await the root_agent coroutine to get the actual agent and exit_stack
     logger.info("Awaiting root_agent creation...")
@@ -46,19 +48,30 @@ async def main(): # Make main async
     logger.info("TaskManager initialized with agent instance.")
 
     # Configuration for the A2A server
-    # Use environment variables or defaults
-    host = os.getenv("SPEAKER_A2A_HOST", "127.0.0.1")
-    port = int(os.getenv("SPEAKER_A2A_PORT", 8003))
+    host = os.getenv("ANALYSER_A2A_HOST", "127.0.0.1")
+    port = int(os.getenv("ANALYSER_A2A_PORT", 8003))
     
-    # Create the FastAPI app using the helper
-    # Pass the agent name, description, and the task manager instance
+    # Create the FastAPI app
     app = create_agent_server(
         name=agent_instance.name,
         description=agent_instance.description,
         task_manager=task_manager_instance 
     )
     
-    logger.info(f"Analyser Agent A2A server starting on {host}:{port}")
+    # Add API router
+    api_router = create_api_router(task_manager_instance)
+    app.include_router(api_router)
+    
+    # Add CORS middleware
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],  # Allows all origins
+        allow_credentials=True,
+        allow_methods=["*"],  # Allows all methods
+        allow_headers=["*"],  # Allows all headers
+    )
+    
+    logger.info(f"Analyser Agent A2A server with API endpoints starting on {host}:{port}")
     
     # Configure uvicorn
     config = uvicorn.Config(app, host=host, port=port, log_level="info")
@@ -79,4 +92,4 @@ if __name__ == "__main__":
         sys.exit(0)
     except Exception as e:
         logger.error(f"Error during server startup: {str(e)}", exc_info=True)
-        sys.exit(1) 
+        sys.exit(1)

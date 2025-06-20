@@ -1,0 +1,26 @@
+version: '3.11'
+
+services:
+  mlrchecker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: mlrchecker:latest
+    container_name: mlrchecker
+    restart: unless-stopped
+    ports:
+      - "8003:8003"
+    environment:
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - ANALYSER_A2A_HOST=0.0.0.0
+      - ANALYSER_A2A_PORT=8003
+    volumes:
+      - ./static:/app/static
+      - ./temp:/app/temp
+      - ./analysis_results.db:/app/analysis_results.db
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8003/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s

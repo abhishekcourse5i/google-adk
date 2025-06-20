@@ -1,5 +1,6 @@
 """
-Task Manager for the Analyser Agent.
+Task Manager for the Analyser Agent (pre MLR version).
+This module handles task processing for the Analyser Agent in A2A mode.
 """
 
 import os
@@ -22,7 +23,7 @@ logger = logging.getLogger(__name__)
 A2A_APP_NAME = "pre_mlr_app"
 
 class TaskManager:
-    """Task Manager for the Analyser Agent in A2A mode."""
+    """Task Manager for the Analyser Agent in A2A mode (pre MLR implementation)."""
     
     def __init__(self, agent: Agent):
         """Initialize with an Agent instance and set up ADK Runner."""
@@ -32,13 +33,13 @@ class TaskManager:
     @classmethod
     async def create(cls, agent):
         """
-        Async factory method to create and configure a SkeletonGraphAgent instance.
+        Async factory method to create and configure a TaskManager instance.
 
         Args:
-            metadata (Dict[str, Any]): Configuration dictionary.
+            agent: The agent instance to manage.
 
         Returns:
-            SkeletonGraphAgent: Configured instance.
+            TaskManager: Configured instance.
         """
         self = cls(agent)
         await self.initialize_runner()

@@ -20,11 +20,11 @@ async def create_agent():
     agent_instance = Agent(
         name="manager_agent",
         model=GEMINI_MODEL,
-        description="Manager Agent for handling various tasks related to video and Instagram post analysis.",
+        description="Manager Agent for handling various tasks related to video Ads, Instagram post and Website URLs analysis.",
         instruction="""
-        You are the manager agent responsible for coordinating the analysis of video ads and Instagram posts.
-        Your task is to manage the sub-agents that analyze video ads and Instagram posts, and to format the output from these analyses.
-        IMPORTANT: You MUST use the response agent to format the output from the sub-agents.""",
+        You are the manager agent responsible for coordinating the analysis of Video ads, Instagram posts and Websites.
+        Your task is to manage the sub-agents that analyze video ads, Instagram posts and Websites and to format the output from these analyses.
+        """,
         sub_agents=[ad_video_analyser_agent, insta_analyser_agent, website_analyser_agent],
         output_key="agent_output",
     )

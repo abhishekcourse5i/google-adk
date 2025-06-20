@@ -1,0 +1,27 @@
+"""
+Video Act Agent
+
+This agent is responsible for analyzing video ads to ensure they adhere to specific guidelines.
+"""
+
+from google.adk.tools.agent_tool import AgentTool
+from google.adk.agents import LlmAgent
+from .tools import get_video_summary
+
+# --- Constants ---
+GEMINI_MODEL = "gemini-2.0-flash"
+
+# Video Act Agent
+video_act_agent = LlmAgent(
+    name="VideoActAgent",
+    model=GEMINI_MODEL,
+    instruction=f"""You are a video analysis agent. Your job is to analyse video ads and check whether they follow the provided guidelines.
+
+    You will receive a path to the video. Based on the response by the tool, your task is to provide suggestions to improve the video ad.
+
+    Also, provide a score out of 100 based if the video follows the guidelines.
+    """,
+    description="This agent analyzes video content to provide suggestions and score using Google Gemini.",
+    tools=[get_video_summary],
+    output_key="agent_output",
+)

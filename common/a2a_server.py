@@ -1,16 +1,21 @@
 """
-Standardized Agent to Agent (A2A) server implementation following Google ADK standards.
+Standardized Agent to Agent (A2A) server implementation following Google ADK standards (pre MLR version).
 This module provides a FastAPI server implementation for agent-to-agent communication.
 """
 
 import os
 import json
 import inspect
+import logging
 from typing import Dict, Any, Callable, Optional, List
 
-from fastapi import FastAPI, Body, HTTPException, Request
+from fastapi import FastAPI, Body, HTTPException, Request, File, UploadFile, Form
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 class AgentRequest(BaseModel):
     """Standard A2A agent request format."""
@@ -29,8 +34,6 @@ def create_agent_server(
     name: str, 
     description: str, 
     task_manager: Any, 
-    endpoints: Optional[Dict[str, Callable]] = None,
-    well_known_path: Optional[str] = None
 ) -> FastAPI:
     """
     Create a FastAPI server for an agent following A2A protocol.
@@ -53,8 +56,6 @@ def create_agent_server(
         """Standard A2A run endpoint for processing agent requests."""
         try:
             result = await task_manager.process_task(request.message, request.context, request.session_id)
-
-            # Using result's data and save to db
 
             return AgentResponse(
                 message=result.get("message", "Task completed"),
