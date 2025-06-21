@@ -41,7 +41,7 @@ def get_video_summary(
         while file1.state.name == "PROCESSING":
             print('.', end='')
             time.sleep(10)
-            gen_file = genai.get_file(gen_file.name)
+            file1 = genai.get_file(file1.name)
         
         logger.debug("Initializing Gemini model")
         model = genai.GenerativeModel(model_name="models/gemini-2.0-flash")
