@@ -76,9 +76,18 @@ echo "Creating directories for volumes..."
 mkdir -p static temp
 chmod 777 static temp
 
+# Check if the container already exists and remove it
+echo "Checking for existing container..."
+if [ "$(docker ps -a -q -f name=mlrchecker)" ]; then
+    echo "Found existing container. Stopping and removing it..."
+    docker stop mlrchecker
+    docker rm mlrchecker
+    echo "Existing container removed."
+fi
+
 # Build and start the Docker container
-echo "Building and starting the Docker container..."
-docker-compose up -d
+echo "Building and starting a new Docker container..."
+docker-compose up -d --build
 
 # Check if the container is running
 if [ "$(docker ps -q -f name=mlrchecker)" ]; then
