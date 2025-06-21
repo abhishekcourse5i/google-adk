@@ -161,17 +161,7 @@ def create_api_router(task_manager):
                 # Generate a unique document ID if not provided
                 document_id = context.get("document_id", str(uuid.uuid4()))
                 
-                # Get document name from file or URL
-                if file and file.filename:
-                    document_name = file.filename
-                elif file_path:
-                    document_name = os.path.basename(file_path)
-                elif url:
-                    document_name = url
-                else:
-                    document_name = f"Document-{document_id}"
-
-                if float(data.get("score", 0.0)) > 90:
+                if float(data.get("score", 0.0)) > 70:
                     status = "Approved"
                 else:
                     status = "Reject"
