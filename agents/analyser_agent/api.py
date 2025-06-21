@@ -156,15 +156,17 @@ def create_api_router(task_manager):
                 # Extract data from the result
                 data = ast_result
                 
-                logger.debug(f"Extracted data: {data}")
+                logger.info(f"Extracted data: {data}")
 
                 # Generate a unique document ID if not provided
                 document_id = context.get("document_id", str(uuid.uuid4()))
                 
                 if float(data.get("score", 0.0)) > 70:
                     status = "Approved"
+                    print(f"Document {document_id} approved with score: {data.get('score', 0.0)}")
                 else:
                     status = "Reject"
+                    print(f"Document {document_id} rejected with score: {data.get('score', 0.0)}")
                 
                 # Extract other fields from the result data
                 # These fields might need to be adjusted based on the actual structure of your result data
