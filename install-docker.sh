@@ -85,6 +85,14 @@ if [ "$(docker ps -a -q -f name=mlrchecker)" ]; then
     echo "Existing container removed."
 fi
 
+# Check if the Docker image exists and remove it
+echo "Checking for existing Docker image..."
+if [ "$(docker images -q mlrchecker:latest)" ]; then
+    echo "Found existing image. Removing it..."
+    docker rmi mlrchecker:latest
+    echo "Existing image removed."
+fi
+
 # Build and start the Docker container
 echo "Building and starting a new Docker container..."
 docker-compose up -d --build

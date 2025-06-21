@@ -4,6 +4,7 @@ Get summary description along with the audio to text of a video using Google Gem
 
 import os
 import logging
+import time
 import google.generativeai as genai
 from dotenv import load_dotenv
 from .prompt import VIDEO_GUIDELINES
@@ -35,7 +36,12 @@ def get_video_summary(
     try:
         logger.debug(f"Uploading video file: {path}")
         file1 = genai.upload_file(path=path)
-        file1 = genai.get_file(file1.name)
+
+        # Check whether the file is ready to be used.
+        while file1.state.name == "PROCESSING":
+            print('.', end='')
+            time.sleep(10)
+            gen_file = genai.get_file(gen_file.name)
         
         logger.debug("Initializing Gemini model")
         model = genai.GenerativeModel(model_name="models/gemini-2.0-flash")
