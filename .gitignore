@@ -202,6 +202,3 @@ __marimo__/
 
 # Jupyter Notebook files
 *.ipynb
-
-# Adding analysis_results.db
-analysis_results.db
