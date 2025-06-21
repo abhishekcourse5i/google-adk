@@ -11,6 +11,6 @@ from .insta_act_agent import insta_act_agent
 # Instagram Agent
 insta_analyser_agent = SequentialAgent(
     name="InstaPostAnalyserAgent",
-    description=("""This is the root agent that coordinates the analysis of Instagram posts."""),
+    description=("""This is the Instagram Analysis Agent that coordinates the analysis of Instagram posts."""),
     sub_agents=[insta_act_agent, insta_response_agent],
 )
